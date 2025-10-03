@@ -3,23 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Virtual Agent – Embed esterno</title>
-
-  <!-- Carica il client "Portable VA" dalla tua istanza -->
-  <!-- Sostituisci con il tuo dominio/istanza ServiceNow -->
-  <script src="https://dev335617.service-now.com/scripts/now-requestor-chat-popover-app/now-requestor-chat-popover-app.min.js?sysparm_substitute=false"></script>
+  <title>Virtual Agent – Embed esterno (PDI)</title>
 
   <style>
-    /* (Opzionale) Un po' di stile per la pagina di test */
     body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      margin: 0; padding: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      margin: 0;
+      padding: 0;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
       background: #f7f7f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
+
     .card {
       background: #fff;
       border-radius: 16px;
@@ -28,80 +26,31 @@
       max-width: 720px;
       width: 92%;
       text-align: center;
+      margin-bottom: 20px;
     }
-    .card h1 { margin: 0 0 8px; font-size: 28px; }
-    .card p  { margin: 0 0 24px; color: #444; line-height: 1.5; }
-    .note {
-      font-size: 14px;
-      color: #666;
-      margin-top: 12px;
-    }
-    .note code {
-      background: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 6px;
+
+    iframe {
+      width: 400px;
+      height: 600px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <h1>Virtual Agent su sito esterno</h1>
-    <p>Questa pagina dimostrativa incorpora il Virtual Agent della tua istanza ServiceNow.
-       Clicca il bottone di chat (galleggiante) per aprire il VA.</p>
-    <p class="note">Assicurati di aver sostituito l'URL istanza nello <code>&lt;script&gt;</code> e sotto in <code>instance</code>.</p>
+    <h1>Virtual Agent su PDI</h1>
+    <p>Questa versione usa l’<b>iframe embed</b>, compatibile anche con istanze personali.<br/>
+       Assicurati di aver reso almeno un topic <code>Public</code> in Virtual Agent Designer.</p>
   </div>
 
-  <script>
-    // Inizializza il widget del VA
-    // Sostituisci con il tuo dominio/istanza (es. https://acme.service-now.com o https://support.example.com)
-    const chat = new ServiceNowChat({
-      instance: 'https://dev335617.service-now.com',
-
-      // (Opzionale) Contesto e comportamenti
-      context: {
-        // Non caricare lo storico delle conversazioni all'apertura
-        skip_load_history: 1
-      },
-
-      // (Opzionale) Branding UI del bottone e del pannello
-      branding: {
-        // Colore di sfondo del launcher/pannello
-        bgColor: '#2e7d32',
-        // Colore principale per elementi attivi
-        primaryColor: '#1b5e20',
-        // Colore hover per il launcher
-        hoverColor: '#43a047',
-        // Colore attivo (focus/pressed)
-        activeColor: '#66bb6a',
-        // (Opzionale) Icone personalizzate (SVG o PNG raggiungibili dal browser)
-        // openIcon: 'https://tuo-dominio/assets/va-open.svg',
-        // closeIcon: 'https://tuo-dominio/assets/va-close.svg',
-        // Scala dimensioni UI (1 = default)
-        sizeMultiplier: 1.0
-      },
-
-      // (Opzionale) Posizionamento del launcher
-      // left | right
-      position: 'right',
-      // Offset dal bordo (px)
-      offsetX: 24,
-      offsetY: 24,
-
-      // (Opzionale) Traduzioni di stringhe UI del launcher
-      translations: {
-        'Open dialog': 'Apri chat',
-        'Open Chat. {0} unread message(s)': 'Apri chat. {0} messaggi non letti',
-        'Close chat.': 'Chiudi chat'
-      }
-    });
-
-    // (Opzionale) esempi di API se servono:
-    // chat.open();    // apri la finestra
-    // chat.close();   // chiudi la finestra
-    // chat.toggle();  // toggla
-  </script>
+  <!-- Iframe embed Virtual Agent -->
+  <iframe 
+    src="https://dev335617.service-now.com/sn_va_web_client_app_embed.do"
+    title="Virtual Agent">
+  </iframe>
 
 </body>
 </html>
-
