@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Virtual Agent – Embed esterno (PDI)</title>
+  <title>Virtual Agent – Embed esterno</title>
 
   <style>
     body {
@@ -41,16 +41,46 @@
 <body>
 
   <div class="card">
-    <h1>Virtual Agent su PDI</h1>
-    <p>Questa versione usa l’<b>iframe embed</b>, compatibile anche con le istanze personali.<br/>
-       Assicurati di avere almeno un topic <code>Public</code> in Virtual Agent Designer.</p>
+    <h1>Virtual Agent su dev335617</h1>
+    <p>Questo esempio integra il Virtual Agent di ServiceNow in un sito esterno via <code>iframe</code>.<br/>
+       Assicurati di avere almeno un topic <code>Public</code> visibile al guest o utente autenticato.</p>
   </div>
 
   <!-- Virtual Agent caricato come iframe -->
   <iframe 
+    id="va_iframe"
     src="https://dev335617.service-now.com/sn_va_web_client_app_embed.do"
     title="Virtual Agent">
   </iframe>
+
+  <!-- Script di gestione comunicazione -->
+  <script>
+    window.addEventListener('message', function(event) {
+      // Verifica origine messaggio per sicurezza
+      if (event.origin !== 'https://dev335617.service-now.com') {
+        console.warn('Messaggio da origine non autorizzata:', event.origin);
+        return;
+      }
+
+      const msg = event.data;
+
+      if (msg?.type === 'SESSION_CREATED') {
+        if (msg.authenticated === false) {
+          console.log('Sessione non autenticata. Reindirizzo al login...');
+          const redirectUri = window.location.href;
+          window.location.href = `https://dev335617.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri=${encodeURIComponent(redirectUri)}`;
+        } else {
+          console.log('Sessione autenticata. Virtual Agent pronto.');
+        }
+      }
+
+      if (msg?.type === 'SESSION_LOGGED_OUT') {
+        console.log('Sessione terminata. Reindirizzo al login...');
+        const redirectUri = window.location.href;
+        window.location.href = `https://dev335617.service-now.com/sn_va_web_client_login.do?sysparm_redirect_uri=${encodeURIComponent(redirectUri)}`;
+      }
+    });
+  </script>
 
 </body>
 </html>
